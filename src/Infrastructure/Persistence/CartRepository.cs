@@ -9,6 +9,8 @@ public class CartRepository: ICartRepository
     private readonly LiteDatabase _liteDb;
     private const string CollectionName = "Carts";
 
+    private static readonly object LockObject = new object();
+
     public CartRepository(ILiteDbContext liteDbContext)
     {
         _liteDb = liteDbContext.Database;
@@ -16,8 +18,12 @@ public class CartRepository: ICartRepository
 
     public int InsertCart(Cart cart)
     {
-        return _liteDb.GetCollection<Cart>(CollectionName)
-            .Insert(cart);
+        lock (LockObject)
+        {
+            cart.Id = GetNewId();
+            return _liteDb.GetCollection<Cart>(CollectionName)
+                .Insert(cart);
+        }
     }
 
     public Cart? GetCart(int id)
@@ -36,5 +42,11 @@ public class CartRepository: ICartRepository
     {
         return _liteDb.GetCollection<Cart>(CollectionName)
             .DeleteMany(x => x.Id == id);
+    }
+
+    private int GetNewId()
+    {
+        var maxId = _liteDb.GetCollection<Cart>(CollectionName).FindOne(Query.All(Query.Descending))?.Id ?? 0;
+        return maxId + 1;
     }
 }

@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Carts\Commands\AddCartItem\" />
-    <Folder Include="Carts\Commands\RemoveCartItem\" />
     <Folder Include="Common\Behaviours\" />
     <Folder Include="Common\Mappings\" />
   </ItemGroup>

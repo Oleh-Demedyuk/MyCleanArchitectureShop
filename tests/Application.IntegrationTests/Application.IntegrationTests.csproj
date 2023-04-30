@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Carts\Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="xunit" Version="2.4.2" />
   </ItemGroup>
 
